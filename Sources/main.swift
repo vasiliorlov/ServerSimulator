@@ -42,7 +42,7 @@ func handler(data: [String:Any]) throws -> RequestHandler {
             "../api/setData/sync   --> type:post --> input params:application specific param " + "<br>" +
             "../api/satData/async  --> type:post --> input params:application specific param " + "<br>" + "<br>" +
             
-            "../api/ping           --> type:get " + "<br>" + "<br>" +
+            "../api/ping           --> type:post " + "<br>" + "<br>" +
             
             "..</font></body></html>")
         // Ensure that response.completed() is called when your processing is done.
@@ -191,7 +191,7 @@ func ping(data: [String:Any]) throws -> RequestHandler {
         request, response in
         response.setHeader(.contentType, value: "application/json")
 
-        let result: [String:Any] = ["is_success":true, "message":"OK", "data":["commands": ["name":"get_data", "params":["param1":"param1", "param2": "param2"]]]]
+        let result: [String:Any] = ["is_success":true, "message":"OK", "data":["commands": [["name":"get_data", "params":["param1":"param1", "param2": "param2"]],["name":"get_data2", "params":["param1_":"param1_", "param2_": "param2_"]]]]]
         do {
             try response.setBody(json: result)
         } catch {
@@ -233,7 +233,7 @@ let confData = [
                 ["methods":["post"],"uri":"/api/setData/ready/**","handler":statusReady],
                 ["methods":["post"],"uri":"/api/setData/noready/**","handler":statusNoReady],
                 
-                ["methods":["get"],"uri":"/api/ping/**","handler":ping],
+                ["methods":["post"],"uri":"/api/ping/**","handler":ping],
                 
                 ["method":"get", "uri":"/**", "handler":PerfectHTTPServer.HTTPHandler.staticFiles,
                  "documentRoot":"./webroot",
